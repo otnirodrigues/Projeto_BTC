@@ -7,10 +7,10 @@ from pygame import *
 class aplication():
 
     def __init__(self):
-        pygame.init()
+        
         self.api_btc()
         self.criando_janela()
-        self.setando_texto()
+        self.setando_texto()   
 
     def api_btc(self):
         cotacao = requests.get("https://economia.awesomeapi.com.br/last/BTC-BRL")
@@ -19,15 +19,14 @@ class aplication():
         self.date_cotacao = cotacao['BTCBRL']["create_date"]
 
     def criando_janela(self):
-        # Criando uma janela de tamanho 600x600, e alterando o nome da janela
+        pygame.init()
         self.screen = pygame.display.set_mode((400, 400))
         self.screen.fill((255, 255, 255))
-        pygame.display.set_caption('Cotação Bitcoin')
-        
+        pygame.display.set_caption('Cotação Bitcoin')       
     
     def setando_texto(self):
        while True:
-
+            
             font = pygame.font.SysFont("comicsansms", 30)
             text = font.render("Valor BTC: {}".format(self.cotacao_btc), True, (255, 0, 0))  
             date = font.render("Data: {}".format(self.date_cotacao), True, (255, 0, 0)) 
@@ -35,9 +34,11 @@ class aplication():
             date_pos = (200 - date.get_width()// 2, 200 - date.get_height() // 2)
             self.screen.blit(text, texto_pos)
             self.screen.blit(date, date_pos)
-        
+            for event in pygame.event.get():
+                if event.type == QUIT:
+                    pygame.quit()
+            
             pygame.display.flip()
             pygame.display.update()
-                
 
 aplication()
