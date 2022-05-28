@@ -2,6 +2,8 @@ import requests
 import json
 import pygame
 from pygame import *
+from win10toast import ToastNotifier
+
 
 
 class aplication():
@@ -9,6 +11,7 @@ class aplication():
     def __init__(self):
         
         self.api_btc()
+        self.notify()
         self.criando_janela()
         self.setando_texto()   
 
@@ -18,11 +21,20 @@ class aplication():
         self.cotacao_btc = cotacao['BTCBRL']["bid"]
         self.date_cotacao = cotacao['BTCBRL']["create_date"]
 
+    def notify(self):
+        toaster = ToastNotifier()
+        toaster.show_toast("Valor BTC",
+                            self.cotacao_btc,
+                            icon_path='btc_icon.png',
+                            duration=30)
+
     def criando_janela(self):
         pygame.init()
         self.screen = pygame.display.set_mode((400, 400))
         self.screen.fill((255, 255, 255))
-        pygame.display.set_caption('Cotação Bitcoin')       
+        pygame.display.set_caption('Cotação Bitcoin')  
+        self.img = pygame.image.load('btc_icon.png')
+        pygame.display.set_icon(self.img)  
     
     def setando_texto(self):
        while True:
